@@ -1,0 +1,66 @@
+[
+  {
+    "id": "1",
+    "price": 36,
+    "title": "The Last Wish",
+    "image": "https://images-na.ssl-images-amazon.com/images/I/41m6LKVv9kS._SX312_BO1,204,203,200_.jpg",
+    "stock": 2,
+    "description": "Geralt the Witcher—revered and hated—holds the line against the monsters plaguing humanity in this collection of adventures, the first chapter in Andrzej Sapkowski’s groundbreaking epic fantasy series that inspired the hit Netflix show and the blockbuster video games."
+  },
+  {
+    "id": "2",
+    "price": 36,
+    "title": "Sword of Destiny",
+    "image": "https://images-na.ssl-images-amazon.com/images/I/41rV10Py9FL._SY291_BO1,204,203,200_QL40_FMwebp_.jpg",
+    "stock": 2,
+    "description": "Sword of Destiny is the follow up to The Last Wish, and together they are the perfect introduction to a one of a kind fantasy world."
+  },
+  {
+    "id": "3",
+    "price": 13,
+    "title": "Blood of Elves",
+    "image": "https://images-na.ssl-images-amazon.com/images/I/41okipM7gDL._SX318_BO1,204,203,200_.jpg",
+    "stock": 20,
+    "description": "For over a century, humans, dwarves, gnomes, and elves have lived together in relative peace. But that peace has now come to an end. Geralt of Rivia, the hunter known as the Witcher, has been waiting for the birth of a prophesied child. The one who has the power to change the world for good—or for evil."
+  },
+  {
+    "id": "4",
+    "price": 30,
+    "title": "The Time of Contempt",
+    "image": "https://images-na.ssl-images-amazon.com/images/I/412HodmPz4L._SY291_BO1,204,203,200_QL40_FMwebp_.jpg",
+    "stock": 6,
+    "description": "His task, now, is to protect Ciri. A child of prophecy, she will have the power to change the world for good or for ill—but only if she lives to use it."
+  },
+  {
+    "id": "5",
+    "price": 15,
+    "title": "Baptism of Fire",
+    "image": "https://images-na.ssl-images-amazon.com/images/I/51b7P8E7EAL._SY291_BO1,204,203,200_QL40_FMwebp_.jpg",
+    "stock": 10,
+    "description": "A deadly coup within the Wizard's Guild leaves the Witcher, Geralt of Rivia, gravely injured, and his ward Ciri missing in the third novel of Andrzej Sapkowski's groundbreaking epic fantasy series that inspired the hit Netflix show and the blockbuster video games. "
+  },
+  {
+    "id": "6",
+    "price": 16,
+    "title": "The Tower of Swallows",
+    "image": "https://images-na.ssl-images-amazon.com/images/I/514wjz5m5ML._SY291_BO1,204,203,200_QL40_FMwebp_.jpg",
+    "stock": 2,
+    "description": "The world has fallen into war. Ciri, the child of prophecy, has vanished. Hunted by friends and foes alike, she has taken on the guise of a petty bandit and lives free for the first time in her life."
+  },
+  {
+    "id": "1",
+    "price": 15,
+    "title": "The Lady of the Lake",
+    "image": "https://images-na.ssl-images-amazon.com/images/I/51R8QdUm2aL._SY291_BO1,204,203,200_QL40_FMwebp_.jpg",
+    "stock": 2,
+    "description": "Trapped in a world ruled by the Elves, separated from Geralt and her destiny, Ciri will need all her training as a fighter and sorceress to survive in the fifth novel of the Witcher, Andrzej Sapkowski’s groundbreaking epic fantasy series that inspired the hit Netflix show and the blockbuster video games — in hardcover for the first time!"
+  },
+  {
+    "id": "1",
+    "price": 15,
+    "title": "Season of Storms",
+    "image": "https://images-na.ssl-images-amazon.com/images/I/51+T1rrvRVL._SX331_BO1,204,203,200_.jpg",
+    "stock": 2,
+    "description": "Before he was the guardian of Ciri, the child of destiny, Geralt of Rivia was a legendary swordsman. Join the Witcher as he undertakes a deadly mission in this stand-alone adventure set in the Andrzej Sapkowki’s groundbreaking epic fantasy world that inspired the hit Netflix show and the blockbuster video games"
+  }
+]
