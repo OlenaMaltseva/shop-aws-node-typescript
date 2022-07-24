@@ -13,6 +13,7 @@ const serverlessConfiguration: AWS = {
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
+    profile: 'honeybadgerAdmin',
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
@@ -41,7 +42,6 @@ const serverlessConfiguration: AWS = {
     autoswagger: {
       title: 'Products',
       typefiles: ['./src/services/products.ts'],
-      host: 'wmh03jmmmd.execute-api.us-east-1.amazonaws.com/dev/',
       schemes: ['https'],
       useStage: true,
     }

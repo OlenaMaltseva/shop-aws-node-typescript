@@ -5,18 +5,11 @@ export interface IProduct {
     price: number,
     title: string,
     image: string,
-    stock: number,
+    count: number,
     description: string,
 }
 
-export type Product = {
-    price: number;
-    title: string;
-    image: string;
-    stock: number;
-    description: string;
-}
 
-export const getProductsByIdService = ( id: string ): Product => products.find( product => product.id === id );
+export const getProductsByIdService = ( id: string ): IProduct => products.find( product => product.id === id );
 
 export const getProductsListService = (): IProduct[] => products;
