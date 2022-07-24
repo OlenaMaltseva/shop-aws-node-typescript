@@ -42,6 +42,7 @@ const serverlessConfiguration: AWS = {
     autoswagger: {
       title: 'Products',
       typefiles: ['./src/services/products.ts'],
+      host: '8q48nwbvhd.execute-api.us-east-1.amazonaws.com/dev/',
       schemes: ['https'],
       useStage: true,
     }
