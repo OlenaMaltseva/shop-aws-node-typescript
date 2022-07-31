@@ -1,13 +1,14 @@
-import { createProduct, getProductsById, getProductsList } from '@functions/index';
 import type { AWS } from '@serverless/typescript';
+import { createProduct, getProductsById, getProductsList } from '@functions/index';
 
 const serverlessConfiguration: AWS = {
   service: 'shop-product-service-4',
-  frameworkVersion: '4',
+  frameworkVersion: '3',
   plugins: [
     'serverless-auto-swagger',
     'serverless-esbuild',
-    'serverless-offline'
+    'serverless-offline',
+    'serverless-dotenv-plugin'
   ],
   useDotenv: true,
   provider: {
@@ -42,7 +43,7 @@ const serverlessConfiguration: AWS = {
       define: { 'require.resolve': undefined },
       platform: 'node',
       concurrency: 10,
-      // external: ['pg-native']
+      external: ['pg-native']
     },
     autoswagger: {
       title: 'Products',

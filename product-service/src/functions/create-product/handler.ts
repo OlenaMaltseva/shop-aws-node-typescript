@@ -1,7 +1,7 @@
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway';
 import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
-import { createProductService } from '../../services/products';
+import { createProductService, IProduct } from '../../services/products';
 
 const validateCreateProductPayload = (payload) => {
   const errors = [];
@@ -38,7 +38,7 @@ const validateCreateProductPayload = (payload) => {
 
 }
 
-const createProduct: ValidatedEventAPIGatewayProxyEvent<unknown> = async (event) => {
+const createProduct = async (event) => {
   try {
     console.log(`createProduct invoked with params: ${event.body}`)
 
