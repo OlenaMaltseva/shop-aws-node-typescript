@@ -4,9 +4,15 @@ import { middyfy } from '@libs/lambda';
 import { getProductsListService } from '../../services/products';
 
 const getProductsList: ValidatedEventAPIGatewayProxyEvent<unknown> = async () => {
-  const products = getProductsListService();
+  try{
+    const products = await getProductsListService();
+    console.log(`getProductsList invoked: ${new Date().toLocaleTimeString()} with result of ${products.length} products`)
 
-  return formatJSONResponse({ products });
+    return formatJSONResponse({ products });
+  } catch (error) {
+    console.log('Error while getting the products list', error);    
+  }
+
 };
 
 export const main = middyfy(getProductsList);

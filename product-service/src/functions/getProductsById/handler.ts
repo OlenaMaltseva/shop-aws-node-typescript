@@ -8,6 +8,8 @@ const getProductsById: ValidatedEventAPIGatewayProxyEvent<unknown> = async (even
     const { productId } = event.pathParameters;
     const product = getProductsByIdService(productId);
     if(product) {
+      console.log(`getProductsById invoked with productId: ${event.pathParameters.productId}, the product is ${event.body}`)
+
       return formatJSONResponse({
         data: product,
       });
@@ -17,7 +19,7 @@ const getProductsById: ValidatedEventAPIGatewayProxyEvent<unknown> = async (even
       statusCode: 404,
       message: "Product not found!",
     });
-  } catch (error) {
+  } catch (error) {  
       return error;
   }
 

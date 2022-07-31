@@ -1,15 +1,15 @@
+import { createProduct, getProductsById, getProductsList } from '@functions/index';
 import type { AWS } from '@serverless/typescript';
 
-import { getProductsList, getProductsById } from '@functions/index';
-
 const serverlessConfiguration: AWS = {
-  service: 'shop-product-service',
-  frameworkVersion: '3',
+  service: 'shop-product-service-4',
+  frameworkVersion: '4',
   plugins: [
     'serverless-auto-swagger',
     'serverless-esbuild',
     'serverless-offline'
   ],
+  useDotenv: true,
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
@@ -19,11 +19,15 @@ const serverlessConfiguration: AWS = {
       shouldStartNameWithService: true,
     },
     environment: {
-      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
-      NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      PG_HOST: process.env.PG_HOST,
+      PG_PORT: process.env.PG_PORT,
+      PG_DATABASE: process.env.PG_DATABASE,
+      PG_USERNAME: process.env.PG_USERNAME,
+      PG_PASSWORD: process.env.PG_PASSWORD,
     },
   },
   functions: {
+    createProduct,
     getProductsList,
     getProductsById 
   },
@@ -38,6 +42,7 @@ const serverlessConfiguration: AWS = {
       define: { 'require.resolve': undefined },
       platform: 'node',
       concurrency: 10,
+      // external: ['pg-native']
     },
     autoswagger: {
       title: 'Products',
