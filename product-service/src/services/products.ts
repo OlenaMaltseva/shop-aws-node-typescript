@@ -63,6 +63,9 @@ export const createProductService = async (product: IProduct): Promise<IProduct>
         await dbClient.query('COMMIT');
 
         return { ...data, ...product};
+    } catch (error) {
+        await dbClient.query('ROLLBACK');
+        console.log(error);
     } finally {
         dbClient?.end();
     }

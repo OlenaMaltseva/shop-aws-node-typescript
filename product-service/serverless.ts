@@ -34,6 +34,9 @@ const serverlessConfiguration: AWS = {
   },
   package: { individually: true },
   custom: {
+    dotenv: {
+      path: './src/.env',
+    },
     esbuild: {
       bundle: true,
       minify: false,
