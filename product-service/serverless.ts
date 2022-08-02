@@ -7,8 +7,8 @@ const serverlessConfiguration: AWS = {
   plugins: [
     'serverless-auto-swagger',
     'serverless-esbuild',
-    'serverless-offline',
-    'serverless-dotenv-plugin'
+    'serverless-dotenv-plugin',
+    'serverless-offline'
   ],
   useDotenv: true,
   provider: {
@@ -20,11 +20,9 @@ const serverlessConfiguration: AWS = {
       shouldStartNameWithService: true,
     },
     environment: {
-      PG_HOST: process.env.PG_HOST,
-      PG_PORT: process.env.PG_PORT,
-      PG_DATABASE: process.env.PG_DATABASE,
-      PG_USERNAME: process.env.PG_USERNAME,
-      PG_PASSWORD: process.env.PG_PASSWORD,
+      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      ...process.env
     },
   },
   functions: {
@@ -34,9 +32,9 @@ const serverlessConfiguration: AWS = {
   },
   package: { individually: true },
   custom: {
-    dotenv: {
-      path: './src/.env',
-    },
+    // dotenv: {
+    //   path: './env',
+    // },
     esbuild: {
       bundle: true,
       minify: false,
