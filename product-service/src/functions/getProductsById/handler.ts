@@ -7,13 +7,13 @@ const getProductsById: ValidatedEventAPIGatewayProxyEvent<unknown> = async (even
   try {
     const { productId } = event.pathParameters;
     const product = await productService.getProductsById(productId);
-    console.log(product);
+    console.log('product', product);
     
     if(!!product) {
       console.log(`getProductsById invoked with productId: ${event.pathParameters.productId}, the product is ${event.body}`)
 
       return formatJSONResponse({
-        data: product,
+        product,
       });
     }
 

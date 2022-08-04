@@ -24,10 +24,9 @@ class ProductService {
     
         try {
             dbClient = await createConnectionClient();
-            const [result] = await dbClient.query(GET_PRODUCT_BY_ID_QUERY[id]);
-            console.log('getProductsByIdService query result', result.rows);
-    
-            return result;
+            const result = await dbClient.query(GET_PRODUCT_BY_ID_QUERY,[id]);
+   
+            return result.rows.length ? result.rows[0] : null;
         } finally {
             dbClient?.end();
         }
@@ -54,30 +53,32 @@ class ProductService {
             dbClient = await createConnectionClient();
     
             await dbClient.query('BEGIN');
-            const [productCreateResult] = await dbClient.query(
+            const productCreateResult = await dbClient.query(
                 CREATE_PRODUCT_QUERY,
                 [product.title,product.price,product.description,product.image]
             );
-
-            console.log('productCreateResult',productCreateResult);
+            const [productItem] = productCreateResult.rows;
+            console.log('productCreateResult',productItem);
             
     
-            console.log('Added product', productCreateResult);
-            const [ stockCreateResult ] = await dbClient.query(
+            console.log('Added product with id', productItem.id);
+
+            const stockCreateResult = await dbClient.query(
                 CREATE_STOCK_QUERY, 
-                [ productCreateResult.id, product.count ]
+                [ productItem.id, product.count ]
             )
             console.log('stockCreateResult',stockCreateResult);
             await dbClient.query('COMMIT');
     
-            return { ...productCreateResult, count: stockCreateResult.count};
+            return { ...productItem, count: product.count};
         } catch (error) {
             await dbClient.query('ROLLBACK');
-            console.log(error);
+            console.log('ROLLBACK',error);
+        
         } finally {
             dbClient?.end();
         }
     };
 }
 
-export default new ProductService();
+export default new ProductService()
