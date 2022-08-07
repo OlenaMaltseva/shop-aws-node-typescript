@@ -3,10 +3,10 @@ import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
 import { S3Event } from 'aws-lambda';
 import { S3 } from 'aws-sdk';
-import { CsvParser } from 'csv-parser';
 // import importService from '../../services/import'; //TODO move to import service
 
 const s3 = new S3();
+const csvParser = require('csv-parser'); //TODO check import, wasn't working
 
 const importFileParser = async (event: S3Event) => {
 
@@ -28,7 +28,7 @@ const importFileParser = async (event: S3Event) => {
           const resultChunks = [];
 
           csvFileReq.createReadStream()
-            .pipe(CsvParser())
+            .pipe(csvParser())
             .on('csvData', (csvData) => resultChunks.push(csvData))
             .on('end', () => resolve(JSON.stringify(resultChunks)))
             .on('error', () => reject(new Error('Csv parse error occured')));
