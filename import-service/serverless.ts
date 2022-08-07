@@ -58,7 +58,7 @@ const serverlessConfiguration: AWS = {
     },
     autoswagger: {
       title: 'Import Service',
-      // typefiles: ['./src/services/import.ts'],
+      typefiles: ['./src/services/import.ts'],
       // host: '8q48nwbvhd.execute-api.us-east-1.amazonaws.com/dev/',
       schemes: ['https'],
       useStage: true,

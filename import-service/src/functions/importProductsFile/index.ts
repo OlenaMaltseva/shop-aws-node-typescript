@@ -1,4 +1,3 @@
-// import schema from './schema';
 import { handlerPath } from '@libs/handler-resolver';
 
 export default {
@@ -7,7 +6,7 @@ export default {
     {
       http: {
         method: 'get',
-        path: 'products',
+        path: 'import',
         cors: true,
         description: 'Gets signed URL for csv upload',
         queryStringParameters: {

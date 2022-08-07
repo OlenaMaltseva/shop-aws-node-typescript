@@ -1,4 +1,3 @@
-// import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway';
 import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
 import { S3Event } from 'aws-lambda';
@@ -19,50 +18,16 @@ const importFileParser = async (event: S3Event) => {
         const { name: bucketName } = record.s3.bucket;
 
   //read stream
-        const csvFileReq = s3.getObject({
-          Bucket: bucketName,
-          Key: importFileName,
-        });
-
-        const csvParsedResult = await new Promise<string>((resolve, reject) => {
-          const resultChunks = [];
-
-          csvFileReq.createReadStream()
-            .pipe(csvParser())
-            .on('csvData', (csvData) => resultChunks.push(csvData))
-            .on('end', () => resolve(JSON.stringify(resultChunks)))
-            .on('error', () => reject(new Error('Csv parse error occured')));
-        });
+        const csvParsedResult = await getStreamReadResult(bucketName, importFileName);
 
   //upload as json to parsed
-        const parseResultsJson = Buffer.from(csvParsedResult);
-        const parsedFilePath = `parsed/${importFileName.split('/').slice(1).join('/')}`;
-
-        await s3.upload({
-          Bucket: bucketName,
-          Key: parsedFilePath.replace('csv', 'json'),
-          ContentType: 'application/json',
-          Body: parseResultsJson,
-        }).promise();
-
-        console.log('Parsed JSON file uploaded to parsed/');
+        const parsedFilePath = await getParsedFile(csvParsedResult, importFileName, bucketName);
 
   //copy to parsed
-        await s3.copyObject({
-          Bucket: bucketName,
-          CopySource: `${bucketName}/${importFileName}`,
-          Key: parsedFilePath,
-        }).promise();
-
-        console.log('Csv file copied to "parsed" folder');
+        await copyParsedFile(bucketName, importFileName, parsedFilePath);
 
   //delete from uploaded
-        await s3.deleteObject({
-          Bucket: bucketName,
-          Key: importFileName,
-        }).promise();
-
-        console.log('csv file deleted from "uploaded" folder');
+        await deleteParsedFile(bucketName, importFileName);
 
         return csvParsedResult;
 
@@ -78,3 +43,58 @@ const importFileParser = async (event: S3Event) => {
 };
 
 export const main = middyfy(importFileParser);
+
+
+async function getStreamReadResult(bucketName: string, importFileName: string) {
+  const csvFileReq = s3.getObject({
+    Bucket: bucketName,
+    Key: importFileName,
+  });
+
+  const csvParsedResult = await new Promise<string>((resolve, reject) => {
+    const resultChunks = [];
+
+    csvFileReq.createReadStream()
+      .pipe(csvParser())
+      .on('csvData', (csvData) => resultChunks.push(csvData))
+      .on('end', () => resolve(JSON.stringify(resultChunks)))
+      .on('error', () => reject(new Error('Csv parse error occured')));
+  });
+  return csvParsedResult;
+}
+
+//TODO move to import service
+async function deleteParsedFile(bucketName: string, importFileName: string) {
+  await s3.deleteObject({
+    Bucket: bucketName,
+    Key: importFileName,
+  }).promise();
+
+  console.log('csv file deleted from "uploaded" folder');
+}
+
+async function copyParsedFile(bucketName: string, importFileName: string, parsedFilePath: string) {
+  await s3.copyObject({
+    Bucket: bucketName,
+    CopySource: `${bucketName}/${importFileName}`,
+    Key: parsedFilePath,
+  }).promise();
+
+  console.log('Csv file copied to "parsed" folder');
+}
+
+async function getParsedFile(csvParsedResult: string, importFileName: string, bucketName: string) {
+  const parseResultsJson = Buffer.from(csvParsedResult);
+  const parsedFilePath = `parsed/${importFileName.split('/').slice(1).join('/')}`;
+
+  await s3.upload({
+    Bucket: bucketName,
+    Key: parsedFilePath.replace('csv', 'json'),
+    ContentType: 'application/json',
+    Body: parseResultsJson,
+  }).promise();
+
+  console.log('Parsed JSON file uploaded to parsed/');
+  return parsedFilePath;
+}
+

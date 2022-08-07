@@ -11,7 +11,7 @@ const importProductsFile: ValidatedEventAPIGatewayProxyEvent<unknown> = async (e
 
     const importFileName = event.queryStringParameters?.name;
     // const importFileName = await importService.importProductsFile(); //TODO separate import service
-    console.log(`getProductsList invoked: ${new Date().toLocaleTimeString()} with result of ${importFileName.length} imported products`);
+    console.log(`getProductsList invoked: ${new Date().toLocaleTimeString()} with result of ${importFileName} imported products`);
 
     if(!importFileName) {
       throw new Error('query param name is missing');

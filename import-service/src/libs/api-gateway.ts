@@ -9,7 +9,7 @@ export const formatJSONResponse = (response: Record<string, unknown>, statusCode
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Credentials" : true,
-      // "Access-Control-Allow-Headers" : "Content-Type",
+      "Access-Control-Allow-Headers" : "Content-Type",
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT,DELETE"
     },
