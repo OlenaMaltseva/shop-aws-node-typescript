@@ -1,13 +1,12 @@
 import type { AWS } from '@serverless/typescript';
-import { createProduct, getProductsById, getProductsList } from '@functions/index';
+import { importProductsFile, importFileParser  } from '@functions/index';
 
 const serverlessConfiguration: AWS = {
-  service: 'shop-product-service-4',
+  service: 'shop-import-service-5',
   frameworkVersion: '3',
   plugins: [
     'serverless-auto-swagger',
     'serverless-esbuild',
-    'serverless-dotenv-plugin',
     'serverless-offline'
   ],
   useDotenv: true,
@@ -15,6 +14,7 @@ const serverlessConfiguration: AWS = {
     name: 'aws',
     runtime: 'nodejs14.x',
     profile: 'honeybadgerAdmin',
+    stage: 'dev',
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
@@ -22,17 +22,23 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
-      PG_HOST: process.env.PG_HOST,
-      PG_PORT: process.env.PG_PORT,
-      PG_DATABASE: process.env.PG_DATABASE,
-      PG_USERNAME: process.env.PG_USERNAME,
-      PG_PASSWORD: process.env.PG_PASSWORD
     },
+    iamRoleStatements: [
+      {
+        Effect: 'Allow',
+        Action: ['s3:ListBucket'],
+        Resource: ['arn:aws:s3:::bookshop-products']
+      },
+      {
+        Effect: 'Allow',
+        Action: ['s3:*'],
+        Resource: ['arn:aws:s3:::bookshop-products/*']
+      }
+    ]
   },
   functions: {
-    createProduct,
-    getProductsList,
-    getProductsById 
+    importProductsFile,
+    importFileParser
   },
   package: { individually: true },
   custom: {
@@ -51,9 +57,9 @@ const serverlessConfiguration: AWS = {
       external: ['pg-native']
     },
     autoswagger: {
-      title: 'Products',
-      typefiles: ['./src/services/products.ts'],
-      host: '8q48nwbvhd.execute-api.us-east-1.amazonaws.com/dev/',
+      title: 'Import Service',
+      // typefiles: ['./src/services/import.ts'],
+      // host: '8q48nwbvhd.execute-api.us-east-1.amazonaws.com/dev/',
       schemes: ['https'],
       useStage: true,
     }
