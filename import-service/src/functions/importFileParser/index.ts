@@ -5,10 +5,11 @@ export default {
   handler: `${handlerPath(__dirname)}/handler.main`,
   events: [
     {
-      http: {
-        method: 'get',
-        path: 'products',
-        // cors: true
+      s3: {
+        bucket: 'bookshop-products',
+        event: 's3:ObjectCreated:*',
+        rules: [{ prefix: 'uploaded/' }],
+        existing: true
       },
     },
   ],
