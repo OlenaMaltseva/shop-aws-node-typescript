@@ -1,9 +1,8 @@
-import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway';
 import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
-import { createProductService, IProduct } from '../../services/products';
+import productService, { ProductDetails } from '../../services/products'; 
 
-const validateCreateProductPayload = (payload) => {
+const validateCreateProductPayload = async(payload) => {
   const errors = [];
   let isValid = true;
 
@@ -40,27 +39,23 @@ const validateCreateProductPayload = (payload) => {
 
 const createProduct = async (event) => {
   try {
-    console.log(`createProduct invoked with params: ${event.body}`)
+    console.log(`createProduct invoked with params: ${JSON.stringify(event.body)}`)
 
-    const { payload } = JSON.parse(event.body);
-    console.log(payload);
+    const payload = event.body as ProductDetails;
+    console.log('payload',payload);
     
 
-    const { isValid, errors, productData } = validateCreateProductPayload(payload);
+    const { isValid, errors, productData } = await validateCreateProductPayload(payload);
 
-    const product = await createProductService(productData);
+    const product = await productService.createProduct(productData);
     if(!isValid) {
       return {
-        message: 'Not valid prodcut data provided',
+        message: 'Not valid product data provided',
         errors
       }
     }
+      return formatJSONResponse({product});
 
-    if(product) {
-      return formatJSONResponse({
-        data: product,
-      });
-    }
   } catch (error) {
     console.log(error);    
       return error;

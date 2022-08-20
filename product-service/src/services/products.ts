@@ -5,68 +5,80 @@ export interface IProduct {
     id: string,
     price: number,
     title: string,
-    image: string,
+    image?: string,
     count: number,
-    description: string,
+    description?: string,
 }
 
-export const getProductsByIdService = async ( id: string ): Promise<IProduct> => {
-    let dbClient;
+export interface ProductDetails {
+    price: number,
+    title: string,
+    image?: string,
+    count: number,
+    description?: string,
+}
 
-    try {
-        dbClient = await createConnectionClient();
-        const result = await dbClient.query(GET_PRODUCT_BY_ID_QUERY[id]);
-        console.log('getProductsByIdService query result', result);
+class ProductService {
+    public async getProductsById ( id: string ): Promise<IProduct> {
+        let dbClient;
+    
+        try {
+            dbClient = await createConnectionClient();
+            const result = await dbClient.query(GET_PRODUCT_BY_ID_QUERY,[id]);
+   
+            return result.rows.length ? result.rows[0] : null;
+        } finally {
+            dbClient?.end();
+        }
+    };
+    
+    
+    public async getProductsList() {
+        let dbClient;
+    
+        try {
+            dbClient = await createConnectionClient();
+            const result = await dbClient.query(GET_PRODUCTS_LIST);
+    
+            return result.rows;
+        } finally {
+            dbClient?.end();
+        }
+    };
 
-        return result.rows?.[0] || null;
-    } finally {
-        dbClient?.end();
-    }
-};
+    public async createProduct (product: IProduct): Promise<IProduct> {
+        let dbClient;
+    
+        try {
+            dbClient = await createConnectionClient();
+    
+            await dbClient.query('BEGIN');
+            const productCreateResult = await dbClient.query(
+                CREATE_PRODUCT_QUERY,
+                [product.title,product.price,product.description,product.image]
+            );
+            const [productItem] = productCreateResult.rows;
+            console.log('productCreateResult',productItem);
+            
+    
+            console.log('Added product with id', productItem.id);
 
-
-export const getProductsListService = async() => {
-    let dbClient;
-
-    try {
-        dbClient = await createConnectionClient();
-        const result = await dbClient.query(GET_PRODUCTS_LIST);
-
-        return result;
-    } finally {
-        dbClient?.end();
-    }
-};
-
-
-export const createProductService = async (product: IProduct): Promise<IProduct> => {
-    let dbClient;
-
-    try {
-        dbClient = await createConnectionClient();
-
-        await dbClient.query('BEGIN');
-        const result = await dbClient.query(
-            CREATE_PRODUCT_QUERY,
-            [product.title, product.price, product.description || '', product.image || '']
-        );
-
-        console.log('Added product', result);
-
-        const [ data ] = result.rows;
-
-        await dbClient.query(
-            CREATE_STOCK_QUERY,
-            [data.id, product.count]
-        )
+            const stockCreateResult = await dbClient.query(
+                CREATE_STOCK_QUERY, 
+                [ productItem.id, product.count ]
+            )
+            console.log('stockCreateResult',stockCreateResult);
+            await dbClient.query('COMMIT');
+    
+            return { ...productItem, count: product.count};
+        } catch (error) {
+            await dbClient.query('ROLLBACK');
+            console.log('ROLLBACK',error);
         
-        await dbClient.query('COMMIT');
+        } finally {
+            dbClient?.end();
+        }
+    };
+}
 
-        return { ...data, ...product};
-    } catch (error) {
-        await dbClient.query('ROLLBACK');
-        console.log(error);
-    } finally {
-        dbClient?.end();
-    }
-};
+export default new ProductService()
