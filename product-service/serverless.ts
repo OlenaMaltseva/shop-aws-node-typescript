@@ -2,7 +2,7 @@ import type { AWS } from '@serverless/typescript';
 import { createProduct, getProductsById, getProductsList } from '@functions/index';
 
 const serverlessConfiguration: AWS = {
-  service: 'shop-product-service-4',
+  service: 'shop-product-service-5',
   frameworkVersion: '3',
   plugins: [
     'serverless-auto-swagger',
@@ -53,7 +53,7 @@ const serverlessConfiguration: AWS = {
     autoswagger: {
       title: 'Products',
       typefiles: ['./src/services/products.ts'],
-      host: '8q48nwbvhd.execute-api.us-east-1.amazonaws.com/dev/',
+      host: '0p91e56xa0.execute-api.us-east-1.amazonaws.com/dev/',
       schemes: ['https'],
       useStage: true,
     }

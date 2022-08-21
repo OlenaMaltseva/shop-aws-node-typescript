@@ -5,7 +5,7 @@ const serverlessConfiguration: AWS = {
   service: 'shop-import-service-5',
   frameworkVersion: '3',
   plugins: [
-    'serverless-auto-swagger',
+    // 'serverless-auto-swagger',
     'serverless-esbuild',
     'serverless-offline'
   ],
@@ -41,10 +41,11 @@ const serverlessConfiguration: AWS = {
     importFileParser
   },
   package: { individually: true },
+  // resources: ,
   custom: {
-    dotenv: {
-      path: './env',
-    },
+    // dotenv: {
+    //   path: './env',
+    // },
     esbuild: {
       bundle: true,
       minify: false,
@@ -54,7 +55,7 @@ const serverlessConfiguration: AWS = {
       define: { 'require.resolve': undefined },
       platform: 'node',
       concurrency: 10,
-      external: ['pg-native']
+      // external: ['pg-native']
     },
     autoswagger: {
       title: 'Import Service',

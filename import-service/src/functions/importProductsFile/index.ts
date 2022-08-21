@@ -7,7 +7,7 @@ export default {
       http: {
         method: 'get',
         path: 'import',
-        cors: true,
+        // cors: true,
         description: 'Gets signed URL for csv upload',
         queryStringParameters: {
           name: {
