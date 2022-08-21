@@ -11,7 +11,7 @@ export const formatJSONResponse = (response: Record<string, unknown>, statusCode
       "Access-Control-Allow-Credentials" : true,
       "Access-Control-Allow-Headers" : "Content-Type",
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT,DELETE"
+      "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT,DELETE,HEAD"
     },
     statusCode,
     body: JSON.stringify(response)
