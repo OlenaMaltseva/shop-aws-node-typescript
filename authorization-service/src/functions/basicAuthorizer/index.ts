@@ -1,4 +1,4 @@
-import { handlerPath } from '../../libs/handler-resolver'
+import { handlerPath } from '@libs/handler-resolver';
 
 export default {
   handler: `${handlerPath(__dirname)}/handler.main`,
@@ -8,13 +8,6 @@ export default {
         method: 'get',
         path: 'import',
         // cors: true,
-        authorizer: {
-          // arn: '${env:AUTHORIZER_LAMBDA}',
-          arn: 'BasicAuthorizerLambdaFunction',
-          resultTtlInSeconds: 0,
-          identitySource: 'method.request.header.Authorization',
-          type: 'token'
-        },
         description: 'Gets signed URL for csv upload',
         queryStringParameters: {
           name: {
