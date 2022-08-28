@@ -1,3 +1,6 @@
+# Task 8 Containarization PR
+[docker](https://github.com/OlenaMaltseva/rs-cart-api/pull/1)
+
 # Serverless - AWS Node.js Typescript
 
 This project has been generated using the `aws-nodejs-typescript` template from the [Serverless framework](https://www.serverless.com/).
